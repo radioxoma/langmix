@@ -115,7 +115,7 @@ def main():
         top_filepath = filedialog.askopenfilename(
             title='Choose top subtitle (small text size)',
             filetypes=[('SRT files', '.srt'), ('All files', '*')],
-            initialdir='~/')
+            initialdir=os.getcwd())
         if top_filepath:
             btm_filepath = filedialog.askopenfilename(
                 title='Choose bottom subtitle (regular text size)',
