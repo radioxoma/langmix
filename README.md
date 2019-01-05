@@ -9,3 +9,9 @@ and subtitles from the second at bottom (with regular letters) of the screen.
 Both GUI and featured command line interfaces are available.
 
 Intended to use with VideoLAN player. Unfortunately new VLC 3 and above doesn't support font tags in SRT files, so [version 2.2.8 is latest compatible](https://get.videolan.org/vlc/2.2.8/).
+
+
+## ripsubtitles.sh
+
+Handy script to extract subtitles from MKV files.
+The script can extract SRT for each language from every file in folder and merge them with `langmix`. Windows users can install mkvtoolnix with [Cygwin](https://www.cygwin.com/).
