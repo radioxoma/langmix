@@ -1,6 +1,7 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-# Automatically extract SRT subtitles from video and put it in a working directory
+# Automatically extract all subtitles from video file
+# and put them in a working directory
 
 if [[ $# -eq 0 ]] ; then
     echo "Video file name required"
