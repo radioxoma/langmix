@@ -24,17 +24,17 @@ filename=$(basename -- "${1}")
 basename="${filename%.*}"
 
 echo 'Streams found:'
-ffprobe -i "$1" -loglevel error -show_entries stream=index:stream_tags=language:stream=codec_type:stream=codec_long_name -of csv=p=0
+ffprobe -i "$1" -loglevel error -show_entries stream=index:stream_tags=language:stream_tags=title:stream=codec_type:stream=codec_long_name -of csv=p=0
 echo
 
 streams=(`ffprobe -loglevel error -select_streams s \
     -show_entries stream=index:stream_tags=language \
     -of csv=p=0 -i "${1}"`)
 
-# if [[ ${streams[@]} -eq 0 ]] ; then
-#     echo "No subtitles?"
-#     exit 0
-# fi
+if [ ${#streams[@]} -eq 0 ]; then
+    echo "No subtitles?"
+    exit 0
+fi
 
 # Generate ffmpeg parameters for subtitle extraction
 args=()
