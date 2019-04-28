@@ -23,7 +23,10 @@ fi
 filename=$(basename -- "${1}")
 basename="${filename%.*}"
 
-# Generate ffmpeg parameters for subtitle extraction
+echo 'Streams found:'
+ffprobe -i "$1" -loglevel error -show_entries stream=index:stream_tags=language:stream=codec_type:stream=codec_long_name -of csv=p=0
+echo
+
 streams=(`ffprobe -loglevel error -select_streams s \
     -show_entries stream=index:stream_tags=language \
     -of csv=p=0 -i "${1}"`)
@@ -33,8 +36,8 @@ streams=(`ffprobe -loglevel error -select_streams s \
 #     exit 0
 # fi
 
+# Generate ffmpeg parameters for subtitle extraction
 args=()
-
 for stream in "${streams[@]}"
 do
     IFS=','
