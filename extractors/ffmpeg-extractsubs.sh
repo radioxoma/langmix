@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Automatically extract all subtitles from video file
+# Automatically extract all subtitles from video file, convert to SRT
 # and put them in a current working directory
 
 E_NOARGS=65
@@ -27,9 +27,8 @@ echo 'Streams found:'
 ffprobe -i "$1" -loglevel error -show_entries stream=index:stream_tags=language:stream_tags=title:stream=codec_type:stream=codec_long_name -of csv=p=0
 echo
 
-streams=(`ffprobe -loglevel error -select_streams s \
-    -show_entries stream=index:stream_tags=language \
-    -of csv=p=0 -i "${1}"`)
+streams=(`ffprobe -i "$1" -loglevel error -select_streams s \
+    -show_entries stream=index:stream_tags=language -of csv=p=0`)
 
 if [ ${#streams[@]} -eq 0 ]; then
     echo "No subtitles?"
@@ -50,4 +49,4 @@ do
     args+=(-map 0:${str} ${basename}-${str}-${lng}.srt)
 done
 
-ffmpeg -loglevel error -stats -i "$1" -c copy ${args[@]}
+ffmpeg -i "$1" -loglevel error -stats -c:s srt ${args[@]}
