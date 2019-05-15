@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # Extract two subtitles from all MKV files using mkvtoolnix.
-# You need run 'mkvinfo', figure out which tracks numbers and edit this file.
+
+# You need to run `mkvinfo movie.mkv` or `mkvextract -i movie.mkv`,
+# to figure out which tracks you need to extract.
 
 # Change 'track ID', 'language' manually. Choose tracks with `mkvinfo`.
 lang1=(5 rus)  # track ID, language prefix. Will be shown at top of player
