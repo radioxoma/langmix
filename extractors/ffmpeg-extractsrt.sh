@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 
-# Automatically extract all subtitles from video file, convert to SRT
-# and put them in the specified folder
-
 E_NOARGS=65
 
+usage="Automatically extract all subtitles from video file,
+convert to SRT and put them in the specified folder. Usage:
+
+    $(basename "$0") [-h] video.mkv output_folder
+
+where:
+    -h  show this help text"
+
 if [[ $# -eq 0 ]] ; then
-    echo "Usage: '`basename $0` video.mkv output_folder'"
+    echo "$usage"
     exit $E_NOARGS
 fi
-
-# case "$1" in
-#     --help) echo "Extract subtitles from given video and put it in a working directory" & exit 0;;
-#     # *) echo 'you gave something else' ;;
-# esac
 
 if [ ! -f "$1" ] ; then
     echo "File not found"
