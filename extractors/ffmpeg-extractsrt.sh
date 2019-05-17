@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # Automatically extract all subtitles from video file, convert to SRT
-# and put them in a current working directory
+# and put them in the specified folder
 
 E_NOARGS=65
 
-if [[ $# -ne 1 ]] ; then
-    echo "Usage: '`basename $0` video.mkv'"
+if [[ $# -eq 0 ]] ; then
+    echo "Usage: '`basename $0` video.mkv output_folder'"
     exit $E_NOARGS
 fi
 
@@ -46,7 +46,7 @@ do
     lng=${i[1]}
     # Stream numbers always present, so we use it at first position
     # in filename for convenient sorting in file manager
-    args+=(-map 0:${str} ${basename}-${str}-${lng}.srt)
+    args+=(-map 0:${str} "${2}/${basename}-${str}-${lng}.srt")
 done
 
 ffmpeg -i "$1" -loglevel error -stats -c:s srt ${args[@]}
