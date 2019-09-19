@@ -40,11 +40,9 @@ fi
 
 # Generate ffmpeg parameters for subtitle extraction
 args=()
-for stream in "${streams[@]}"
+for stream in ${streams[@]}
 do
-    IFS=','
-    read -ra i <<< "${stream//[$'\t\r\n']}"
-    # unset IFS
+    IFS=',' read -ra i <<< "${stream//[$'\t\r\n']}"
     str=${i[0]}
     lng=${i[1]}
     # Stream numbers always present, so we use it at first position
