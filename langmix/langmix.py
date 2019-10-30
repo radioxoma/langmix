@@ -38,20 +38,20 @@ Command line interface
 Allows batch processing by file mask. All subtitles must be in the same folder
 and have similar names. E.g. for files:
 
-    s01e01.XviD.AC3.Russian.srt
-    s01e01.XviD.AC3.English.srt
+    s01e01.Russian.srt
+    s01e01.English.srt
 
 You should specify mask which corresponds both of them. Mask must contain '{:}'
 symbols e.g.: '{top:bottom}', so script will produce file with name
 's01e01.XviD.AC3.RussianEnglish.srt'.
 
-    $ python langmix.py "s01e01.XviD.AC3.{Russian:English}.srt"
+    $ python langmix.py "s01e01.{Russian:English}.srt"
 
 You can use glob ('*') in file mask which is useful for video series.
 An example for merging all subtitles for all episodes of first season (s01)
 with saving to `subs` folder:
 
-    $ python langmix.py "s01e*.XviD.AC3.{Russian:English}.srt" --out subs
+    $ python langmix.py "s01e*.{Russian:English}.srt" --out subs
 """
 
 TOP_SRT_TEMPLATE = "{{\\an8}}<font size=\"16\">{}</font>"
@@ -154,7 +154,7 @@ def main():
     args = parser.parse_args()
 
     mask = os.path.basename(args.mask[0])
-    srt_dir = os.path.dirname(args.mask[0])
+    srt_dir = os.path.dirname(os.path.abspath(args.mask[0]))
 
     languages = re.search("\{(.+?)\:(.+?)\}", mask)
     if not languages:
