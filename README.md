@@ -10,11 +10,12 @@ Both GUI and featured command line interfaces are available.
 
 Windows users can download [precompiled *ffmpeg*](https://ffmpeg.org/download.html). Make sure it in the system `PATH`.
 
+
 ## General how-to
 
-1. Get the SRT files. Subtitles could be extracted more-or-less automatically with scripts from `extractors` folder.
+1. Extract SRT files with `extractors/ffmpeg-extractsrt.sh` script.
 2. Merge them with langmix.
-3. Put the file along with movie or in the subfolder named "subtitles", "subs" (VLC convention).
+3. Put merged SRT file along with movie or in the subfolder named "subtitles", "subs" (default VLC folder).
 4. Watch. [VLC](https://videolan.org) will load subtitle file automatically. Choose the right one by pressing <kbd>V</kbd>.
 
 
