@@ -10,7 +10,7 @@ Both GUI and featured command line interfaces are available.
 
 ## General how-to
 
-1. `extractors/ffmpeg-extractsrt.sh` extracts all subtitles from one video file as *SubRip SRT*
+1. `extractors/langmix-extractsrt.sh` extracts all subtitles from one video file as *SubRip SRT*
 2. Merge SRT subtitles with `langmix` (GUI or cli batch mode)
 3. Watch:
     * For [MPV](https://mpv.io/) put merged SRT file along with movie
@@ -21,7 +21,7 @@ Simplest case: extract subtitles from one movie and merge them:
     $ mkdir subs
     $ ls
     Movie.mkv subs
-    $ ffmpeg-extractsrt.sh Movie.mkv subs
+    $ langmix-extractsrt.sh Movie.mkv subs
     $ ls subs
     Movie-1-rus.srt Movie-2-eng.srt
     $ langmix  # If no parameters given, will show GUI file dialogs
@@ -30,9 +30,9 @@ Batch processing in Linux/Cygwin (e.g. for series):
 
     mkdir subs
     # For normal Linux
-    find . -type f -iname "*.mkv" -exec ffmpeg-extractsrt {} subs/ \;
+    find . -type f -iname "*.mkv" -exec langmix-extractsrt {} subs/ \;
     # Cygwin
-    find . -type f -iname "*.mkv" -exec sh /cygdrive/c/dev/src/langmix/extractors/ffmpeg-extractsrt.sh {} subs/ \;
+    find . -type f -iname "*.mkv" -exec sh /cygdrive/c/dev/src/langmix/extractors/langmix-extractsrt.sh {} subs/ \;
     $ langmix "True.Detective.s01e*.WEBDL.720p-{3-rus:4-eng}.srt"
 
 
