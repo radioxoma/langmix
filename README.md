@@ -26,13 +26,18 @@ Simplest case: extract subtitles from one movie and merge them:
     Movie-1-rus.srt Movie-2-eng.srt
     $ langmix  # If no parameters given, will show GUI file dialogs
 
-Batch processing in Linux/Cygwin (e.g. for series):
+Extract subtitles from all video files (batch processing for series):
 
     mkdir subs
     # For normal Linux
     find . -type f -iname "*.mkv" -exec langmix-extractsrt {} subs/ \;
+    
     # Cygwin
     find . -type f -iname "*.mkv" -exec sh /cygdrive/c/dev/src/langmix/extractors/langmix-extractsrt.sh {} subs/ \;
+
+Merdge files, using filename mask (read `langmix --help`):
+
+    $ cd subs
     $ langmix "True.Detective.s01e*.WEBDL.720p-{3-rus:4-eng}.srt"
 
 
@@ -50,6 +55,6 @@ I personally use [Cygwin enviroment](https://www.cygwin.com/), as it helps insta
 
 Langmix is written in pure python3 and uses tkinter for file dialogs.
 
-    $ sudo apt install git python3-tk python3-pysrt # Debian / Ubuntu
-    $ sudo pacman -S git python tk python-pysrt # Archlinux
+    $ sudo apt install git python3-tk python3-pysrt  # Debian / Ubuntu
+    $ sudo pacman -S git python tk python-pysrt  # Archlinux
 
