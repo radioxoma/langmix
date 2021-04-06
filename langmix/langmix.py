@@ -23,8 +23,8 @@ __description__ = """\
 Create multilanguage subtitles by merging two SRT video subtitles into one.
 The tool is handy for language learning.
 
-Subtitles from the first file will be shown at top (with smaller letters),
-and subtitles from the second at bottom (with regular letters) of the screen.
+Subtitles from the first file will be shown at top (with smaller letters by default),
+and subtitles from the second at bottom (with regular letters by default) of the screen.
 
 GUI
 ---
@@ -106,7 +106,7 @@ def join_srt_files(srt_top, srt_btm, srt_out, topsize=None, botsize=None, topcol
                 i.text = FONT_COLOR_TEMPLATE.format(color, i.text)
         return srts
 
-    top = change_font(pysrt.open(srt_top), topsize, topcolor)
+    top = change_font(pysrt.open(srt_top), topsize if topsize is not None else 16, topcolor)
     btm = change_font(pysrt.open(srt_btm), botsize, botcolor)
 
     merged = pysrt.SubRipFile(items=btm)
