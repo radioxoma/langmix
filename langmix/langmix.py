@@ -158,25 +158,14 @@ def main():
         description=__description__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("mask", nargs=1, help="Mask of SRT files.")
-    parser.add_argument(
-        "--out",
-        help=(
+    parser.add_argument("--out",help=(
             "Output directory. Will be created if not exists."
             " If not given, writes merged files in working directory."))
-    parser.add_argument(
-        "--verbose", action='store_true', help="Print discovered file paths.")
-    parser.add_argument(
-        "--topsize", type=int, help="Set font size for the top subtitle."
-    )
-    parser.add_argument(
-        "--botsize", type=int, help="Set font size for the bottom subtitle."
-    )
-    parser.add_argument(
-        "--topcolor", help="Set font color for the top subtitle."
-    )
-    parser.add_argument(
-        "--botcolor", help="Set font color for the bottom subtitle."
-    )
+    parser.add_argument("--verbose", action='store_true', help="Print discovered file paths.")
+    parser.add_argument("--topsize", type=int, help="Set font size for the top subtitle.")
+    parser.add_argument("--botsize", type=int, help="Set font size for the bottom subtitle.")
+    parser.add_argument("--topcolor", help="Set font color for the top subtitle.")
+    parser.add_argument("--botcolor", help="Set font color for the bottom subtitle.")
     args = parser.parse_args()
 
     mask = os.path.basename(args.mask[0])
