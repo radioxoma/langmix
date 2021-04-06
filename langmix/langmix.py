@@ -158,7 +158,7 @@ def main():
         description=__description__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("mask", nargs=1, help="Mask of SRT files.")
-    parser.add_argument("--out",help=(
+    parser.add_argument("--out", help=(
             "Output directory. Will be created if not exists."
             " If not given, writes merged files in working directory."))
     parser.add_argument("--verbose", action='store_true', help="Print discovered file paths.")
