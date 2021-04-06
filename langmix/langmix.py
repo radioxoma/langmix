@@ -54,8 +54,10 @@ with saving to `subs` folder:
     $ python langmix.py "s01e*.{Russian:English}.srt" --out subs
 """
 
-TOP_SRT_TEMPLATE = "{{\\an8}}<font size=\"16\">{}</font>"
-# No template for bottom SRT - it meant to be shown as is
+TOP_SRT_TEMPLATE = "{{\\an8}}{}"
+FONT_SIZE_TEMPLATE = "<font size=\"{}\">{}</font>"
+FONT_COLOR_TEMPLATE = "<font color=\"#{}\">{}</font>"
+FONT_SIZE_COLOR_TEMPLATE = "<font size=\"{}\" color=\"#{}\">{}</font>"
 
 
 def construct_fn(s1, s2, lang_top, lang_btm):
@@ -89,11 +91,23 @@ def files_exist(*args):
         sys.exit(1)
 
 
-def join_srt_files(srt_top, srt_btm, srt_out):
+def join_srt_files(srt_top, srt_btm, srt_out, topsize=None, botsize=None, topcolor=None, botcolor=None):
     """Join two subtitles and save result.
     """
-    top = pysrt.open(srt_top)
-    btm = pysrt.open(srt_btm)
+    def change_font(srts, size, color):
+        if size is not None and color is not None:
+            for i in srts:
+                i.text = FONT_SIZE_COLOR_TEMPLATE.format(size, color, i.text)
+        elif size is not None:
+            for i in srts:
+                i.text = FONT_SIZE_TEMPLATE.format(size, i.text)
+        elif color is not None:
+            for i in srts:
+                i.text = FONT_COLOR_TEMPLATE.format(color, i.text)
+        return srts
+
+    top = change_font(pysrt.open(srt_top), topsize, topcolor)
+    btm = change_font(pysrt.open(srt_btm), botsize, botcolor)
 
     merged = pysrt.SubRipFile(items=btm)
     for item in top:
@@ -150,7 +164,19 @@ def main():
             "Output directory. Will be created if not exists."
             " If not given, writes merged files in working directory."))
     parser.add_argument(
-        "--verbose", action='store_true', help="Print discovered file paths")
+        "--verbose", action='store_true', help="Print discovered file paths.")
+    parser.add_argument(
+        "--topsize", type=int, help="Set font size for the top subtitle."
+    )
+    parser.add_argument(
+        "--botsize", type=int, help="Set font size for the bottom subtitle."
+    )
+    parser.add_argument(
+        "--topcolor", help="Set font color for the top subtitle."
+    )
+    parser.add_argument(
+        "--botcolor", help="Set font color for the bottom subtitle."
+    )
     args = parser.parse_args()
 
     mask = os.path.basename(args.mask[0])
@@ -189,7 +215,7 @@ def main():
         if args.verbose:
             print(top_filepath, btm_filepath, dst_filepath)
         files_exist(top_filepath, btm_filepath)
-        join_srt_files(top_filepath, btm_filepath, dst_filepath)
+        join_srt_files(top_filepath, btm_filepath, dst_filepath, args.topsize, args.botsize, args.topcolor, args.botcolor)
 
 
 if __name__ == '__main__':
