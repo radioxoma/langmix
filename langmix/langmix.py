@@ -56,7 +56,7 @@ with saving to `subs` folder:
 
 TOP_SRT_TEMPLATE = "{{\\an8}}{}"
 FONT_SIZE_TEMPLATE = "<font size=\"{}\">{}</font>"
-FONT_COLOR_TEMPLATE = "<font color=\"#{}\">{}</font>"
+FONT_COLOR_TEMPLATE = "<font color=\"{}\">{}</font>"
 FONT_SIZE_COLOR_TEMPLATE = "<font size=\"{}\" color=\"#{}\">{}</font>"
 
 
