@@ -95,10 +95,10 @@ def join_srt_files(srt_top, srt_btm, srt_out, topsize=None, botsize=None, topcol
     """Join two subtitles and save result.
     """
     def change_font(srts, size, color):
-        if size is not None and color is not None:
+        if size is not None and color is not None and size > 0:
             for i in srts:
                 i.text = FONT_SIZE_COLOR_TEMPLATE.format(size, color, i.text)
-        elif size is not None:
+        elif size is not None and size > 0:
             for i in srts:
                 i.text = FONT_SIZE_TEMPLATE.format(size, i.text)
         elif color is not None:
