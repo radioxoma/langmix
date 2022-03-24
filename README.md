@@ -45,10 +45,9 @@ Merge files, using filename mask (read `langmix --help`):
 
 ### Windows
 
-I personally recommend [Cygwin enviroment](https://www.cygwin.com/), as it helps install *git*, *python3-setuptools* and gives reasonable *cli* interface. Unfortunately it doesn't provide *ffmpeg*, so download it [here](https://ffmpeg.org/download.html) and add it in the system `PATH`.
+Consider installing [msys2](https://www.msys2.org/) or [Cygwin](https://www.cygwin.com/) enviroment along with [choco](https://chocolatey.org/).
 
     $ pip install https://github.com/radioxoma/heval/archive/master.zip
-
 
 ### Linux
 > Tip: Archlinux [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository/) package [`langmix-git`](https://aur.archlinux.org/packages/langmix-git/) available.
