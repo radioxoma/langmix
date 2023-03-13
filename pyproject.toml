@@ -20,14 +20,10 @@ classifiers = [
     "Topic :: Text Processing",
 ]
 
-dependencies = [
-    "pysrt",
-]
+dependencies = ["pysrt>=1.0.0"]
 
 [project.optional-dependencies]
-dev = [
-    "pre-commit",
-]
+dev = ["pre-commit==3.1.1"]
 
 [tool.setuptools.dynamic]
 version = {attr = "langmix.__version__"}
@@ -37,3 +33,6 @@ Homepage = "https://github.com/radioxoma/langmix"
 
 [project.gui-scripts]
 langmix = "langmix.langmix:main"
+
+[tool.setuptools]
+packages = ["langmix"]

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 import argparse
 import difflib
@@ -8,18 +7,12 @@ import fnmatch
 import os
 import re
 import sys
-try:  # python 3
-    from tkinter import *
-    from tkinter.ttk import *
-    from tkinter import filedialog
-except ImportError:
-    from Tkinter import *
-    from ttk import *
-    import tkFileDialog as filedialog
+import tkinter
+from tkinter import filedialog
+
 import pysrt  # https://github.com/byroot/pysrt
 
-
-__description__ = """\
+__description__ = r"""\
 Create multilanguage subtitles by merging two SRT video subtitles into one.
 The tool is handy for language learning.
 
@@ -55,9 +48,9 @@ with saving to `subs` folder:
 """
 
 TOP_SRT_TEMPLATE = "{{\\an8}}{}"
-FONT_SIZE_TEMPLATE = "<font size=\"{}\">{}</font>"
-FONT_COLOR_TEMPLATE = "<font color=\"{}\">{}</font>"
-FONT_SIZE_COLOR_TEMPLATE = "<font size=\"{}\" color=\"#{}\">{}</font>"
+FONT_SIZE_TEMPLATE = '<font size="{}">{}</font>'
+FONT_COLOR_TEMPLATE = '<font color="{}">{}</font>'
+FONT_SIZE_COLOR_TEMPLATE = '<font size="{}" color="#{}">{}</font>'
 
 
 def construct_fn(s1, s2, lang_top, lang_btm):
@@ -67,20 +60,19 @@ def construct_fn(s1, s2, lang_top, lang_btm):
     """
     matcher = difflib.SequenceMatcher(None, s1, s2)
     for tag, i1, i2, j1, j2 in matcher.get_opcodes():
-        if tag == 'replace':
+        if tag == "replace":
             # print("Replace '%s' from [%d:%d] of s1 with '%s' from [%d:%d]"
             #     " of s2" % (s1[i1:i2], i1, i2, s2[j1:j2], j1, j2))
             if s1[i1:i2] == "{:}":
                 break
 
-    filename2 = ''.join((s2[:j1], lang_btm, s2[j2:]))
-    filename_out = ''.join((s2[:j1], lang_top + lang_btm, s2[j2:]))
+    filename2 = "".join((s2[:j1], lang_btm, s2[j2:]))
+    filename_out = "".join((s2[:j1], lang_top + lang_btm, s2[j2:]))
     return s2, filename2, filename_out
 
 
 def files_exist(*args):
-    """Check if files exists in the file system.
-    """
+    """Check if files exists in the file system."""
     do_exit = False
     for f in args:
         if not os.path.isfile(f):
@@ -91,9 +83,11 @@ def files_exist(*args):
         sys.exit(1)
 
 
-def join_srt_files(srt_top, srt_btm, srt_out, topsize=None, botsize=None, topcolor=None, botcolor=None):
-    """Join two subtitles and save result.
-    """
+def join_srt_files(
+    srt_top, srt_btm, srt_out, topsize=None, botsize=None, topcolor=None, botcolor=None
+):
+    """Join two subtitles and save result."""
+
     def change_font(srts, size, color):
         if size is not None and color is not None and size > 0:
             for i in srts:
@@ -106,7 +100,9 @@ def join_srt_files(srt_top, srt_btm, srt_out, topsize=None, botsize=None, topcol
                 i.text = FONT_COLOR_TEMPLATE.format(color, i.text)
         return srts
 
-    top = change_font(pysrt.open(srt_top), topsize if topsize is not None else 16, topcolor)
+    top = change_font(
+        pysrt.open(srt_top), topsize if topsize is not None else 16, topcolor
+    )
     btm = change_font(pysrt.open(srt_btm), botsize, botcolor)
 
     merged = pysrt.SubRipFile(items=btm)
@@ -123,28 +119,31 @@ def main():
     # Simple file dialogs
     if len(sys.argv) == 1:
         print("If you would like to use the batch mode, please read `--help`.")
-        root = Tk()
+        root = tkinter.Tk()
         root.withdraw()
 
         top_filepath = filedialog.askopenfilename(
-            title='Choose top subtitle (small text size)',
-            filetypes=[('SRT files', '.srt'), ('All files', '*')],
-            initialdir=os.getcwd())
+            title="Choose top subtitle (small text size)",
+            filetypes=[("SRT files", ".srt"), ("All files", "*")],
+            initialdir=os.getcwd(),
+        )
         if top_filepath:
             btm_filepath = filedialog.askopenfilename(
-                title='Choose bottom subtitle (regular text size)',
-                filetypes=[('SRT files', '.srt'), ('All files', '*')],
-                initialdir=os.path.dirname(top_filepath))
+                title="Choose bottom subtitle (regular text size)",
+                filetypes=[("SRT files", ".srt"), ("All files", "*")],
+                initialdir=os.path.dirname(top_filepath),
+            )
         else:
             btm_filepath = None
         if btm_filepath:
             fname, ext = os.path.splitext(os.path.basename(top_filepath))
             dst_filepath = filedialog.asksaveasfilename(
-                title='Output subtitle file',
-                filetypes=[('SRT files', '.srt'), ('All files', '*')],
-                defaultextension='.srt',
+                title="Output subtitle file",
+                filetypes=[("SRT files", ".srt"), ("All files", "*")],
+                defaultextension=".srt",
                 initialdir=os.path.dirname(top_filepath),
-                initialfile=fname + 'merged' + ext)
+                initialfile=fname + "merged" + ext,
+            )
         else:
             dst_filepath = None
         if not all((top_filepath, btm_filepath, dst_filepath)):
@@ -156,14 +155,25 @@ def main():
     # CLI with bath processing
     parser = argparse.ArgumentParser(
         description=__description__,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("mask", nargs=1, help="Mask of SRT files.")
-    parser.add_argument("--out", help=(
+    parser.add_argument(
+        "--out",
+        help=(
             "Output directory. Will be created if not exists."
-            " If not given, writes merged files in working directory."))
-    parser.add_argument("--verbose", action='store_true', help="Print discovered file paths.")
-    parser.add_argument("--topsize", type=int, help="Set font size for the top subtitle.")
-    parser.add_argument("--botsize", type=int, help="Set font size for the bottom subtitle.")
+            " If not given, writes merged files in working directory."
+        ),
+    )
+    parser.add_argument(
+        "--verbose", action="store_true", help="Print discovered file paths."
+    )
+    parser.add_argument(
+        "--topsize", type=int, help="Set font size for the top subtitle."
+    )
+    parser.add_argument(
+        "--botsize", type=int, help="Set font size for the bottom subtitle."
+    )
     parser.add_argument("--topcolor", help="Set font color for the top subtitle.")
     parser.add_argument("--botcolor", help="Set font color for the bottom subtitle.")
     args = parser.parse_args()
@@ -171,18 +181,19 @@ def main():
     mask = os.path.basename(args.mask[0])
     srt_dir = os.path.dirname(os.path.abspath(args.mask[0]))
 
-    languages = re.search("\{(.+?)\:(.+?)\}", mask)
+    languages = re.search(r"\{(.+?)\:(.+?)\}", mask)
     if not languages:
         print(
             "Passed invalid filename mask '{}'."
-            " Consider reading `--help`.".format(mask))
+            " Consider reading `--help`.".format(mask)
+        )
         sys.exit(1)
 
     lang_top = languages.group(1)
     lang_btm = languages.group(2)
 
-    mask_top = re.sub("\{.+?\}", lang_top, mask)
-    mask_abstract = re.sub("\{.+?\}", '{:}', mask)
+    mask_top = re.sub(r"\{.+?\}", lang_top, mask)
+    mask_abstract = re.sub(r"\{.+?\}", "{:}", mask)
 
     if args.out:
         try:
@@ -204,8 +215,16 @@ def main():
         if args.verbose:
             print(top_filepath, btm_filepath, dst_filepath)
         files_exist(top_filepath, btm_filepath)
-        join_srt_files(top_filepath, btm_filepath, dst_filepath, args.topsize, args.botsize, args.topcolor, args.botcolor)
+        join_srt_files(
+            top_filepath,
+            btm_filepath,
+            dst_filepath,
+            args.topsize,
+            args.botsize,
+            args.topcolor,
+            args.botcolor,
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

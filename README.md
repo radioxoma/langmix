@@ -31,7 +31,7 @@ Extract subtitles from all video files:
     mkdir subs
     # For Linux
     find . -type f -iname "*.mkv" -exec langmix-extractsrt {} subs/ \;
-    
+
     # Cygwin
     find . -type f -iname "*.mkv" -exec sh /cygdrive/c/dev/src/langmix/extractors/langmix-extractsrt.sh {} subs/ \;
 
